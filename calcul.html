@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Calculator</title>
+</head>
+<body>
+    <div class="bg-black w-[400px] h-[520px] mx-auto my-24 p-5 border border-gray-300 rounded-2xl shadow-md">
+     <input type="text" class="w-full h-20 text-right mb-2.5 p-2.5 border border-gray-300 rounded-lg text-lg bg-gray-100" id="display" readonly>
+        <div class="grid grid-cols-4 gap-2.5">
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100 ">AC</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">DEL</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">.</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">/</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">7</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">8</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">9</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">*</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">4</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">5</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">6</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">-</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">1</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">2</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">3</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">+</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">00</div>
+            <div class="button p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">0</div>
+            <div class="button  w-[173px] p-5 text-lg cursor-pointer text-center border border-gray-300 rounded-lg bg-gray-100">=</div>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById('display');
+        const buttons = document.querySelectorAll('.button');
+        let string = '';
+    
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const value = e.target.innerHTML;
+                if (value === '=') {
+                    string = calculate(string);
+                    display.value = string;
+                } else if (value === 'DEL') {
+                    string = string.slice(0, -1);
+                    display.value = string;
+                } else if (value === 'AC') {
+                    string = "";
+                    display.value = string;
+                } else {
+                    string += value;
+                    display.value = string;
+                }
+            });
+        });
+    
+        function calculate(a) {
+            try {
+                const operators = /[+\-*/]/;
+                const operands = a.split(operators);
+                const operations = a.split('').filter(char => operators.test(char));
+                let result = parseFloat(operands[0]);
+    
+                for (let i = 0; i < operations.length; i++) {
+                    const nextOperand = parseFloat(operands[i + 1]);
+                    switch (operations[i]) {
+                        case '+':
+                            result += nextOperand;
+                            break;
+                        case '-':
+                            result -= nextOperand;
+                            break;
+                        case '*':
+                            result *= nextOperand;
+                            break;
+                        case '/':
+                            result /= nextOperand;
+                            break;
+                    }
+                }
+                return result;
+            } catch (error) {
+                return "Error";
+            }
+        }
+    </script>
+    
+    
+</body>
+</html>
